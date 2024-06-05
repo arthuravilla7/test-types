@@ -1,0 +1,30 @@
+main {
+
+    & h3 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+}
+
+ul {
+    list-style-type: square;
+
+    & li {
+        margin-left: 15px;
+    }
+}
+
+.facebook-button {
+    background-color: #1877F2;
+    color: white;
+    text-align: center;
+    font-size: 15px;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    font-weight: 700;
+    text-decoration: none;
+    display: block;
+    max-width: 200px;
+}

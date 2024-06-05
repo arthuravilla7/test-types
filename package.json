@@ -2,7 +2,7 @@
   "name": "1sight",
   "version": "1.0.0",
   "main": "server.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --watch -- server.js"
@@ -20,8 +20,5 @@
     "express-session": "^1.18.0",
     "passport": "^0.7.0",
     "passport-facebook": "^3.0.0"
-  },
-  "devDependencies": {
-    
   }
 }

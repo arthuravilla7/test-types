@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='styles/main.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='styles/instagram-insight.css'>
+     <!-- <script src='main.js'></script> -->
+     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+</head>
+<body>
+    <%- include('partials/header') -%>
+
+    <main>
+        <h3>Antes de começar, você precisará do seguinte:</h3>
+
+        <ul>
+            <li>
+                Uma conta comercial ou uma conta de criador de conteúdo do Instagram
+            </li>
+            <li>
+                Uma conta no facebook para criar uma Página do Facebook
+            </li>
+            <li>
+                Uma Página do Facebook para conectar à conta do Instagram
+            </li>
+        </ul>
+
+        <br/>
+
+        <h3>Links úteis:</h3>
+        <ul>
+            <li>
+                <a href="https://help.instagram.com/502981923235522" target="_blank">Como criar conta comercial do Instagram?</a>
+            </li>
+            <li>
+                <a href="https://help.instagram.com/1158274571010880" target="_blank">Como criar conta de criador de conteúdo do Instagram?</a>
+            </li>
+        </ul>
+
+        <br>
+
+        <p>Para continuar, é necessário fazer <a href="/facebook-login" class="facebook-button">Login com facebook</a></p>
+
+    </main>
+
+    <%- include('partials/footer') -%>
+</body>
+</html>
