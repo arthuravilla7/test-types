@@ -14,20 +14,23 @@
     <%- include('partials/header') -%>
 
     <main>
+        <h3>Bem vindo ao 1nsight</h3>
+        <p>Faremos uma análise dos comentários presentes nas medias postadas em sua rede social e proveremos um poderoso entendimento de como as pessoas avaliam sua página.</p>
+        
+        <br/>
+        <br/>
+        
         <h3>Antes de começar, você precisará do seguinte:</h3>
-
         <ul>
-            <li>
-                Uma conta comercial ou uma conta de criador de conteúdo do Instagram
-            </li>
-            <li>
-                Uma conta no facebook para criar uma Página do Facebook
-            </li>
-            <li>
-                Uma Página do Facebook para conectar à conta do Instagram
-            </li>
+            <li>Uma conta comercial ou uma conta de criador de conteúdo do Instagram</li>
+            <li>Uma conta no facebook para criar uma Página do Facebook</li>
+            <li>Uma Página do Facebook para conectar à conta do Instagram</li>
+            <li>Não há suporte para stories. </li>
+            <li>Não há suporte para mídias em publicações promovidas.</li>
+            <li>Há um retorno máximo de 10.000 dos objetos de mídia mais recentes</li>
         </ul>
 
+        <br/>
         <br/>
 
         <h3>Links úteis:</h3>
@@ -41,9 +44,15 @@
         </ul>
 
         <br>
+        <br/>
 
-        <p>Para continuar, é necessário fazer <a href="/facebook-login" class="facebook-button">Login com facebook</a></p>
-
+        <% if (facebookUserId && facebookName)  {%>
+            <p> Você está logado como <%= facebookName %> e sua conta do instagram é <%= instagramPageName %>.</p>
+            <p> Detectamos <%= instagramMediaList.length %> medias em sua conta do instagram.</p>
+            <button>Fazer análise dos seus comentários</button>
+        <% } else { %>
+            <p>Para continuar, é necessário fazer <a href="/facebook-login" class="facebook-button">Login com facebook</a></p>
+        <%}%>
     </main>
 
     <%- include('partials/footer') -%>

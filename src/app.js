@@ -8,21 +8,21 @@ const app = express()
 app.use(cors())
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
-
-//app.set('views', path.join(__dirname, '/'));
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+}))
 
 const FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID
 const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET
-
- 
-const facebookAccessTokens = new Map()
 
 app.get('/', (req, res) => {
     res.render('home')
 })
 
 app.get('/instagram-insight', (req, res) => {
-  res.render('instagram-insight')
+  res.render('instagram-insight', req.session.facebookData ? req.session.facebookData : { facebookUserId: null, facebookName: null })
 })
 
 app.get('/facebook-login', (req, res) => {
@@ -44,11 +44,37 @@ app.get('/facebook-oauth-redirect', async (req, res) => {
 
     // Make an API request to exchange `authCode` for an access token
     const accessToken = await axios.get(accessTokenUrl).then(res => res.data['access_token']);
-    // Store the token in memory for now. Later we'll store it in the database.
-    console.log('Access token is', accessToken);
-    facebookAccessTokens.set(1, accessToken);
 
-    res.redirect(`/me?accessToken=${encodeURIComponent(accessToken)}`);
+    const userProfileUrl = `https://graph.facebook.com/me?access_token=${encodeURIComponent(accessToken)}`
+    const { id: facebookUserId, name: facebookName } = await axios.get(userProfileUrl).then(res => res.data );
+
+    const facebookAccountUrl = `https://graph.facebook.com/v20.0/${facebookUserId}/accounts?access_token=${accessToken}`
+    const facebookAccountData = await axios.get(facebookAccountUrl).then(res => res.data );
+    const facebookBusinessAccountId = facebookAccountData.data[0].id // pegando a primeira account da lista
+    
+
+    const instagramAccountUrl = `https://graph.facebook.com/v20.0/${facebookBusinessAccountId}/?fields=instagram_business_account{id,name,username}&access_token=${accessToken}`
+    const igBusinessAccounts = await axios.get(instagramAccountUrl).then(res => res.data );
+    const { id: instagramBusinessAccountId, name: instagramPageName, username} = igBusinessAccounts.instagram_business_account;
+
+    const instagramMediaUrl = `https://graph.facebook.com/v20.0/${instagramBusinessAccountId}/media?fields=id,caption,timestamp,comments,media_url&access_token=${accessToken}`
+    const instagramMediaList = await axios.get(instagramMediaUrl).then(res => res.data );
+
+    req.session.facebookData = {
+      facebookUserId,
+      facebookName,
+      facebookBusinessAccountId,
+      instagramBusinessAccountId,
+      instagramPageName,
+      instagramMediaList: instagramMediaList.data,
+      accessToken
+    }
+
+    res.render('instagram-insight', { 
+      facebookUserId, 
+      facebookName, 
+      instagramPageName,
+      instagramMediaList: instagramMediaList.data });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: err.response.data || err.message });
